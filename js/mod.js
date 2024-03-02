@@ -7,19 +7,22 @@ let modInfo = {
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 1,  // In hours
+	initialStartPoints: new Decimal (1), // Used for hard resets and new players
+	offlineLimit: 48,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.0",
-	name: "Nothing",
+	num: "0.1",
+	name: "Two Layers",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0.0</h3><br>
-		- Changed Info`
+	<h3>v0.0</h3><br>
+		- Changed Info<br>
+	<h3>v0.1</h3><br?
+		- Added multiple buttons to layer 1<br>
+		- Added a second layer`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -42,6 +45,17 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('p', 11)) gain = gain.times(2)
+	if (hasUpgrade('p', 12)) gain = gain.times(2)
+	if (hasUpgrade('p', 13)) gain = gain.times(4)
+	if (hasUpgrade('p', 14)) gain = gain.times(upgradeEffect('p', 14))
+	if (hasUpgrade('p', 16)) gain = gain.times(upgradeEffect('p', 16))
+	if (hasUpgrade('p', 18)) gain = gain.times(20)
+	if (hasUpgrade('p', 19)) gain = gain.times(30)
+	if (hasUpgrade('p', 21)) gain = gain.times(100)
+	if (hasUpgrade('p', 23)) gain = gain.times(upgradeEffect('p', 14))
+	if (hasUpgrade('p', 25)) gain = gain.times(upgradeEffect('p', 16))
+	if (hasUpgrade('r', 12)) gain = gain.times(20)
 	return gain
 }
 
@@ -55,7 +69,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return player['r'].points.gte(new Decimal("100"))
 }
 
 
